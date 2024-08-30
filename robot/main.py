@@ -1,5 +1,18 @@
 import cv2
 
+def print_camera_info():
+    index = 0
+    arr = []
+    while True:
+        cap = cv2.VideoCapture(index)
+        if not cap.read()[0]:
+            break
+        else:
+            arr.append(index)
+        cap.release()
+        index += 1
+    print(f"Cámaras disponibles: {arr}")
+
 def open_camera(camera_index, window_name):
     cap = cv2.VideoCapture(camera_index)
     if not cap.isOpened():
@@ -33,4 +46,8 @@ def open_two_cameras():
     cap2.release()
     cv2.destroyAllWindows()
 
+# Imprime información sobre las cámaras disponibles
+print_camera_info()
+
+# Abre las dos cámaras
 open_two_cameras()
