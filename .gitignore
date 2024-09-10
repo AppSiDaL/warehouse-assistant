@@ -4,3 +4,4 @@
 */video
 *.DS_Store
 */.pio
+*.env
