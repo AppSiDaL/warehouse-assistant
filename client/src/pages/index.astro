@@ -1,16 +1,35 @@
 ---
-
+import Dashboard from "../components/Dashboard.astro";
+import LayoutSide from "../components/LayoutSide.astro";
+import "./main.css";
 ---
 
+<!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Astro</title>
+
+		<meta name="generator" content={Astro.generator} />
+		<script
+		is:inline
+		src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"
+	  ></script>
+		<meta name="copyright" content="MIT" />
+
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body
+		class:list={[
+			'bg-gray-50 dark:bg-gray-800',
+			'scrollbar scrollbar-w-3 scrollbar-thumb-rounded-[0.25rem]',
+			'scrollbar-track-slate-200  scrollbar-thumb-gray-400',
+			'dark:scrollbar-track-gray-900 dark:scrollbar-thumb-gray-700',
+		]}
+	>
+		<LayoutSide>
+		  <Dashboard />
+		</LayoutSide>
 	</body>
 </html>
+
