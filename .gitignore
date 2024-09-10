@@ -1,2 +1,5 @@
 /venv
 *.pyc
+*.sqlite3
+*/video
+*.DS_Store
