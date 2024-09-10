@@ -1,0 +1,182 @@
+[
+  {
+    "code": "0001",
+    "brand": "Nike",
+    "isBox": true,
+    "description": "Air Max 90",
+    "dimension": "10x30x15",
+    "quantity": 10,
+    "price": 100
+  },
+  {
+    "code": "0002",
+    "brand": "Adidas",
+    "isBox": true,
+    "description": "Superstar",
+    "dimension": "10x30x15",
+    "quantity": 10,
+    "price": 80
+  },
+  {
+    "code": "0003",
+    "brand": "Puma",
+    "isBox": true,
+    "description": "RS-X",
+    "dimension": "10x30x15",
+    "quantity": 10,
+    "price": 90
+  },
+  {
+    "code": "0004",
+    "brand": "Reebok",
+    "isBox": true,
+    "description": "Classic",
+    "dimension": "10x30x15",
+    "quantity": 10,
+    "price": 70
+  },
+  {
+    "code": "0005",
+    "brand": "Vans",
+    "isBox": true,
+    "description": "Old Skool",
+    "dimension": "10x30x15",
+    "quantity": 10,
+    "price": 60
+  },
+  {
+    "code": "0006",
+    "brand": "Samsung",
+    "isBox": true,
+    "description": "Galaxy S21",
+    "dimension": "7x15x1",
+    "quantity": 50,
+    "price": 799
+  },
+  {
+    "code": "0007",
+    "brand": "Apple",
+    "isBox": true,
+    "description": "iPhone 13",
+    "dimension": "7x15x1",
+    "quantity": 40,
+    "price": 999
+  },
+  {
+    "code": "0008",
+    "brand": "Sony",
+    "isBox": true,
+    "description": "PlayStation 5",
+    "dimension": "40x40x10",
+    "quantity": 20,
+    "price": 499
+  },
+  {
+    "code": "0009",
+    "brand": "Microsoft",
+    "isBox": true,
+    "description": "Xbox Series X",
+    "dimension": "40x40x10",
+    "quantity": 20,
+    "price": 499
+  },
+  {
+    "code": "0010",
+    "brand": "LG",
+    "isBox": true,
+    "description": "OLED TV",
+    "dimension": "120x70x10",
+    "quantity": 15,
+    "price": 1200
+  },
+  {
+    "code": "0011",
+    "brand": "Dell",
+    "isBox": true,
+    "description": "XPS 13",
+    "dimension": "30x20x2",
+    "quantity": 30,
+    "price": 999
+  },
+  {
+    "code": "0012",
+    "brand": "HP",
+    "isBox": true,
+    "description": "Spectre x360",
+    "dimension": "30x20x2",
+    "quantity": 25,
+    "price": 1099
+  },
+  {
+    "code": "0013",
+    "brand": "Canon",
+    "isBox": true,
+    "description": "EOS R5",
+    "dimension": "15x10x10",
+    "quantity": 10,
+    "price": 3899
+  },
+  {
+    "code": "0014",
+    "brand": "Nikon",
+    "isBox": true,
+    "description": "Z7 II",
+    "dimension": "15x10x10",
+    "quantity": 10,
+    "price": 2999
+  },
+  {
+    "code": "0015",
+    "brand": "Bose",
+    "isBox": true,
+    "description": "QuietComfort 35",
+    "dimension": "20x20x10",
+    "quantity": 50,
+    "price": 299
+  },
+  {
+    "code": "0016",
+    "brand": "Sony",
+    "isBox": true,
+    "description": "WH-1000XM4",
+    "dimension": "20x20x10",
+    "quantity": 50,
+    "price": 349
+  },
+  {
+    "code": "0017",
+    "brand": "Logitech",
+    "isBox": true,
+    "description": "MX Master 3",
+    "dimension": "10x5x5",
+    "quantity": 100,
+    "price": 99
+  },
+  {
+    "code": "0018",
+    "brand": "Razer",
+    "isBox": true,
+    "description": "DeathAdder V2",
+    "dimension": "10x5x5",
+    "quantity": 100,
+    "price": 69
+  },
+  {
+    "code": "0019",
+    "brand": "Asus",
+    "isBox": true,
+    "description": "ROG Strix G15",
+    "dimension": "40x30x5",
+    "quantity": 20,
+    "price": 1499
+  },
+  {
+    "code": "0020",
+    "brand": "Acer",
+    "isBox": true,
+    "description": "Predator Helios 300",
+    "dimension": "40x30x5",
+    "quantity": 20,
+    "price": 1299
+  }
+]
