@@ -1,17 +1,22 @@
-import threading
 import uvicorn
 from fastapi import FastAPI
-from utils.video import capture_frames
-from controllers.main import router
+from contextlib import asynccontextmanager
+from controllers import robot, items
+from utils.db import engine, Base
 
-app = FastAPI()
-app.include_router(router)
 
-if __name__ == '__main__':
-    # Inicia el hilo de captura de cuadros
-    t = threading.Thread(target=capture_frames)
-    t.daemon = True
-    t.start()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Application startup")
+    Base.metadata.create_all(bind=engine)
 
-    # Inicia el servidor FastAPI
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    yield
+    print("Application shutdown")
+
+
+app = FastAPI(lifespan=lifespan)
+app.include_router(robot.router, prefix="/api/robot")
+app.include_router(items.itemsRouter, prefix="/api/items")
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
