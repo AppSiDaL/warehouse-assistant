@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List, Optional, Dict, Any
-from schemas.items import ItemResponseSchema, ItemRequestSchema
+from schemas.item import ItemResponseSchema, ItemRequestSchema
 from sqlalchemy.orm import Session
 from utils.dependencies import get_db
-from models.items import Item
-from models.platforms import Platform  # Importar el modelo Platform
+from models.item import Item
+from models.platform import Platform  # Importar el modelo Platform
 from sqlalchemy import func
 itemsRouter = APIRouter()
 
