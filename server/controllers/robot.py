@@ -31,7 +31,7 @@ def video_feed1(video_source: int = 0, model_path: str = "path/to/your/model.pt"
 
 
 def opencv_stream(video_source, model_path, output_json):
-    for frame in run_inference(video_source, model_path, output_json, display=False):
+    for frame in run_inference(video_source, model_path, output_json, display=False,use_ocr=False):
         yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n\r\n")
 
 
