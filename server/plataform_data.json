@@ -1,27 +1,50 @@
 {
-    "208": {
+    "4": {
         "visible_boxes": 6,
         "total_boxes": 24,
-        "type": "1"
+        "type": "B-001",
+        "platform_id": "T-001"
     },
-    "222": {
+    "11": {
         "visible_boxes": 6,
         "total_boxes": 24,
-        "type": "1"
+        "type": "B-001",
+        "platform_id": "T-002"
     },
-    "232": {
-        "visible_boxes": 0,
-        "total_boxes": 0,
-        "type": "1"
+    "13": {
+        "visible_boxes": 6,
+        "total_boxes": 24,
+        "type": "B-001",
+        "platform_id": "T-003"
     },
-    "234": {
-        "visible_boxes": 5,
-        "total_boxes": 20,
-        "type": "1"
+    "18": {
+        "visible_boxes": 6,
+        "total_boxes": 24,
+        "type": "B-001",
+        "platform_id": "T-004"
     },
-    "239": {
-        "visible_boxes": 5,
-        "total_boxes": 20,
-        "type": "1"
+    "25": {
+        "visible_boxes": 6,
+        "total_boxes": 24,
+        "type": "B-001",
+        "platform_id": "T-005"
+    },
+    "28": {
+        "visible_boxes": 6,
+        "total_boxes": 24,
+        "type": "B-001",
+        "platform_id": "T-006"
+    },
+    "32": {
+        "visible_boxes": 6,
+        "total_boxes": 24,
+        "type": "B-001",
+        "platform_id": "T-007"
+    },
+    "36": {
+        "visible_boxes": 6,
+        "total_boxes": 24,
+        "type": "B-001",
+        "platform_id": "T-008"
     }
 }
