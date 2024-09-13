@@ -1,0 +1,28 @@
+---
+import { SERVER_URL } from "../constants";
+---
+
+<style>
+  .camera-image {
+    width: 640px;
+    height: 640px;
+    object-fit: contain;
+  }
+</style>
+
+<div class="flex space-x-4 mb-8">
+  <div class="w-1/2">
+    <h1 class="text-2xl font-bold mb-4">Camera 1</h1>
+    <img
+      src={`${SERVER_URL}/robot/opencv_vision`}
+      class="camera-image rounded-lg shadow-lg"
+    />
+  </div>
+  <div class="w-1/2">
+    <h1 class="text-2xl font-bold mb-4">Camera 2</h1>
+    <img
+      src={`${SERVER_URL}/robot/run_inference`}
+      class="camera-image rounded-lg shadow-lg"
+    />
+  </div>
+</div>
