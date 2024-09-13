@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean
 from utils.db import Base
+from sqlalchemy.orm import relationship
 
 
 class Item(Base):
@@ -10,5 +11,6 @@ class Item(Base):
     description = Column(String(255))
     isBox = Column(Boolean)
     dimension = Column(String(255))
-    quantity = Column(Integer)
     price = Column(Integer)
+
+    platforms = relationship("Platform", back_populates="items")
