@@ -7,7 +7,6 @@ class ItemResponseSchema(BaseModel):
     description: str = Field(..., description="Description of the item")
     isBox: bool = Field(..., description="Is the item a box?")
     dimension: str = Field(..., description="Dimension of the item")
-    quantity: int = Field(..., description="Quantity of the item")
     price: int = Field(..., description="Cost of the item")
 
     class Config:
