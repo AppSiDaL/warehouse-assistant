@@ -1,0 +1,51 @@
+<script>
+  import "./ButtonHandler.client";
+  import "leaflet/dist/leaflet.css";
+  import L from "leaflet";
+
+  let map: any;
+  let marker: any;
+
+  function initMap() {
+    let bounds = [
+      [50, 50], // padding
+      [847, 1280], // image dimensions
+    ];
+
+    map = L.map("map", {
+      crs: L.CRS.Simple,
+      maxZoom: 1,
+      minZoom: -4,
+      maxBounds: bounds as any,
+    });
+
+    L.imageOverlay("/map.png", bounds as any).addTo(map);
+    map.fitBounds(bounds);
+
+    marker = L.marker([50, 50])
+      .addTo(map)
+      .bindPopup("Robot Position")
+      .openPopup();
+  }
+
+  function updateRobotPosition(x: any, y: any) {
+    if (marker) {
+      marker.setLatLng([x, y]);
+      map.setView([x, y], map.getZoom());
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initMap();
+
+    // Simulación de actualización de posición del robot
+    setInterval(() => {
+      const x = 50 + Math.random() * 797; // Random x within image width
+      const y = 50 + Math.random() * 1230; // Random y within image height
+      updateRobotPosition(x, y);
+    }, 5000);
+  });
+</script>
+
+<h1 class="text-2xl font-bold mb-4">Robot Position</h1>
+<div id="map" class="w-full h-96 rounded-lg shadow-lg"></div>
