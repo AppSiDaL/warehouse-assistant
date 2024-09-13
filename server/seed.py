@@ -1,7 +1,8 @@
 
 from sqlalchemy import create_engine, text
-from models.items import Item
-from models.platforms import Platform
+from models.item import Item
+from models.robot import Robot
+from models.platform import Platform
 from utils.db import SessionLocal, engine, Base
 import json
 
@@ -40,5 +41,18 @@ with open("seeders/platforms.json") as f:
         for platform in platforms_data
     ]
     db_session.bulk_save_objects(platforms)
+    db_session.commit()
+    
+with open("seeders/robots.json") as f:
+    robots_data = json.load(f)
+    robots = [
+        Robot(
+            id=robot["id"],
+            microcontroller=robot["microcontroller"],
+            architecture=robot["architecture"],
+        )
+        for robot in robots_data
+    ]
+    db_session.bulk_save_objects(robots)
     db_session.commit()
 db_session.close()
