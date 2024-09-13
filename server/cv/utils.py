@@ -1,12 +1,14 @@
 import cv2
-from pyzbar import pyzbar
 import json
-
+from services.items import create_or_update_item
+from services.platforms import update_platform
 # Known parameters
 KNOWN_WIDTH = 0.5  # Example: known width of the object in meters
 FOCAL_LENGTH = 800  # Example: focal length of the camera in pixels
 AVERAGE_BOX_DEPTH = 0.5  # Example: average depth of a box in meters
 PALLET_DEPTH = 2.0  # Example: depth of the pallet in meters
+
+# URL of the endpoint to get item description
 
 
 def estimate_distance(known_width, focal_length, pixel_width):
@@ -49,8 +51,27 @@ def estimate_box_count(distances, average_box_depth, pallet_depth, current_count
     return num_boxes_in_depth * current_count
 
 
-def process_detections(frame, detections, polygon_zone, plataform_data, qr):
+def save_data_to_json(plataform_data, output_json):
+    with open(output_json, "w") as f:
+        json.dump(plataform_data, f, indent=4)
+
+
+def process_detections(
+    frame,
+    detections,
+    box_detections,
+    plataform_data,
+    detected_text,
+    last_platform_id=None,
+    processed_platforms=None,
+    output_json="plataform_data.json",
+):
+    if processed_platforms is None:
+        processed_platforms = set()
+
     distances = []
+    current_platform_ids = set()
+
     for i in range(len(detections.xyxy)):
         box_x1, box_y1, box_x2, box_y2 = detections.xyxy[i]
         box_width = box_x2 - box_x1
@@ -84,10 +105,24 @@ def process_detections(frame, detections, polygon_zone, plataform_data, qr):
         # Draw tracker ID for class 1 (platform)
         if detections.class_id[i] == 1 and i < len(detections.tracker_id):
             platform_id = str(detections.tracker_id[i])
-            current_count = polygon_zone.current_count
-            type = plataform_data[platform_id]["type"] if platform_id in plataform_data else ""
-            if qr:
-                type = qr[0].data.decode("utf-8")
+            current_platform_ids.add(platform_id)
+            current_count = len(box_detections)
+            type = (
+                plataform_data[platform_id]["type"]
+                if platform_id in plataform_data
+                else ""
+            )
+            if detected_text:
+                # Extract platform ID and box code from detected text
+                if "_" in detected_text:
+                    platform_id_text, box_code = detected_text.split("_")
+                else:
+                    platform_id_text, box_code = detected_text, ""
+
+                type = box_code
+            else:
+                platform_id_text = ""
+
             # Update platform data and save type
             if platform_id in plataform_data:
                 plataform_data[platform_id]["type"] = type
@@ -98,7 +133,39 @@ def process_detections(frame, detections, polygon_zone, plataform_data, qr):
                     "visible_boxes": current_count,
                     "total_boxes": 0,
                     "type": type,
+                    "platform_id": platform_id_text,
                 }
+
+            # Estimate the number of boxes on the platform
+            if distances:
+                if isinstance(plataform_data[platform_id], dict):
+                    box_count = estimate_box_count(
+                        distances,
+                        AVERAGE_BOX_DEPTH,
+                        PALLET_DEPTH,
+                        plataform_data[platform_id]["visible_boxes"],
+                    )
+                    plataform_data[platform_id]["total_boxes"] = box_count
+                    draw_text(
+                        frame,
+                        f"Estimated boxes: {box_count}",
+                        (10, 120),
+                        font_scale=1,
+                        color=(0, 255, 0),
+                    )
+
+            # Get item description based on type only if platform_id has changed
+            if (
+                last_platform_id != platform_id
+                and platform_id not in processed_platforms
+            ):
+                update_platform(
+                    platform_id_text,
+                    plataform_data[platform_id]["total_boxes"],
+                    plataform_data[platform_id]["type"],
+                )
+                last_platform_id = platform_id
+                processed_platforms.add(platform_id)
 
             draw_text(
                 frame,
@@ -107,37 +174,16 @@ def process_detections(frame, detections, polygon_zone, plataform_data, qr):
                 font_scale=0.7,
             )
 
-    # Estimate the number of boxes on the platform
-    if distances:
-        for platform_id in plataform_data:
-            box_count = estimate_box_count(
-                distances,
-                AVERAGE_BOX_DEPTH,
-                PALLET_DEPTH,
-                plataform_data[platform_id]["visible_boxes"],
-            )
-            plataform_data[platform_id]["total_boxes"] = box_count
-            draw_text(
-                frame,
-                f"Estimated boxes: {box_count}",
-                (10, 120),
-                font_scale=1,
-                color=(0, 255, 0),
-            )
+    # Save JSON when a platform goes out of the screen
+    if last_platform_id and last_platform_id not in current_platform_ids:
+        save_data_to_json(plataform_data, output_json)
+        update_platform(
+            plataform_data[last_platform_id]["platform_id"],
+            plataform_data[last_platform_id]["total_boxes"],
+            plataform_data[last_platform_id]["type"],
+        )
+        last_platform_id = (
+            None  # Reset last_platform_id to indicate the platform has left the screen
+        )
 
-
-def scan_qr_codes(frame):
-    qrcodes = pyzbar.decode(frame)
-    for qrcode in qrcodes:
-        (x, y, w, h) = qrcode.rect
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
-        qrcode_data = qrcode.data.decode("utf-8")
-        qrcode_type = qrcode.type
-        text = f"{qrcode_data} ({qrcode_type})"
-        draw_text(frame, text, (x, y - 10), font_scale=0.5, color=(0, 0, 255))
-    return qrcodes
-
-
-def save_data_to_json(plataform_data, output_json):
-    with open(output_json, "w") as f:
-        json.dump(plataform_data, f, indent=4)
+    return last_platform_id, processed_platforms
