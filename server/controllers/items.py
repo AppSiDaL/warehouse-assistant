@@ -1,32 +1,52 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List, Optional, Dict, Any
-from schemas.items import ItemResponseSchema,ItemRequestSchema
+from schemas.items import ItemResponseSchema, ItemRequestSchema
 from sqlalchemy.orm import Session
 from utils.dependencies import get_db
 from models.items import Item
-
+from models.platforms import Platform  # Importar el modelo Platform
+from sqlalchemy import func
 itemsRouter = APIRouter()
 
 previous_total_quantity = 500
+
 
 @itemsRouter.get("/", response_model=Dict[str, Any])
 async def read_classes(modelId: Optional[int] = None, db: Session = Depends(get_db)):
     query = db.query(Item)
     items = query.all()
-    
-    total_quantity = sum(item.quantity for item in items)
-    
+
+    # Sumar todas las items_count del modelo Platform
+    total_quantity = db.query(Platform).with_entities(func.sum(Platform.items_count)).scalar() or 0
+
     # Calcular el crecimiento
-    growth = ((total_quantity - previous_total_quantity) / previous_total_quantity) * 100
-    
+    growth = (
+        (total_quantity - previous_total_quantity) / previous_total_quantity
+    ) * 100
+
     # Convertir los objetos Item a diccionarios usando Pydantic
     items_dict = [ItemResponseSchema.from_orm(item).dict() for item in items]
-    
-    return {
-        "items": items_dict,
-        "total_quantity": total_quantity,
-        "growth": growth
-    }
+
+    return {"items": items_dict, "total_quantity": total_quantity, "growth": growth}
+
+
+@itemsRouter.get("/{id}", response_model=ItemResponseSchema)
+async def read_class(id: str, db: Session = Depends(get_db)):
+    item = db.query(Item).filter(Item.code == str(id)).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Class not found")
+    return item
+
+
+@itemsRouter.put("/add/{id}", response_model=ItemResponseSchema)
+async def add_class(id: str, db: Session = Depends(get_db), total_boxes: int = None):
+    item = db.query(Item).filter(Item.code == str(id)).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Class not found")
+    item.quantity += total_boxes
+    db.commit()
+    db.refresh(item)
+    return item
 
 
 @itemsRouter.post("/", response_model=ItemResponseSchema)
