@@ -1,50 +1,50 @@
 {
-    "304": {
+    "5": {
         "visible_boxes": 6,
-        "total_boxes": 24,
-        "type": "B-001",
-        "platform_id": "T-001"
+        "total_boxes": 12,
+        "type": "",
+        "platform_id": "T-AA01"
     },
-    "311": {
+    "11": {
         "visible_boxes": 6,
-        "total_boxes": 24,
-        "type": "B-001",
-        "platform_id": "T-002"
+        "total_boxes": 12,
+        "type": "",
+        "platform_id": "T-AA02"
     },
-    "313": {
+    "13": {
         "visible_boxes": 6,
-        "total_boxes": 24,
-        "type": "B-001",
-        "platform_id": "T-003"
+        "total_boxes": 12,
+        "type": "",
+        "platform_id": "T-AA03"
     },
-    "318": {
+    "18": {
         "visible_boxes": 6,
-        "total_boxes": 24,
-        "type": "B-001",
-        "platform_id": "T-004"
+        "total_boxes": 12,
+        "type": "",
+        "platform_id": "T-AA04"
     },
-    "325": {
+    "27": {
         "visible_boxes": 6,
-        "total_boxes": 24,
-        "type": "B-001",
-        "platform_id": "T-005"
+        "total_boxes": 12,
+        "type": "",
+        "platform_id": "T-AA05"
     },
-    "328": {
+    "31": {
         "visible_boxes": 6,
-        "total_boxes": 24,
-        "type": "B-001",
-        "platform_id": "T-006"
+        "total_boxes": 12,
+        "type": "",
+        "platform_id": "T-AA06"
     },
-    "332": {
+    "34": {
         "visible_boxes": 6,
-        "total_boxes": 24,
-        "type": "B-001",
-        "platform_id": "T-007"
+        "total_boxes": 12,
+        "type": "",
+        "platform_id": "T-AA07"
     },
-    "336": {
+    "38": {
         "visible_boxes": 6,
-        "total_boxes": 24,
-        "type": "B-001",
-        "platform_id": "T-008"
+        "total_boxes": 12,
+        "type": "",
+        "platform_id": "T-AA08"
     }
 }
