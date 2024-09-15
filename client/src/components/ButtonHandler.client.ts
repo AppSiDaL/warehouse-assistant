@@ -1,4 +1,4 @@
-import ControlService from "../services/control";
+import RobotService from "../services/robot";
 // Find all buttons with the `alert` class on the page.
 const buttons = document.querySelectorAll("button.alert");
 
@@ -11,5 +11,5 @@ buttons.forEach((button) => {
 });
 
 const handleCommandSend = (command: string) => {
-  ControlService.sendCommand(command);
+  RobotService.sendCommand(command);
 };
