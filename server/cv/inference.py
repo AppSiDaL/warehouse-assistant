@@ -10,7 +10,6 @@ from .utils import (
     draw_text,
     process_detections,
     save_data_to_json,
-    create_or_update_item,
 )
 from .config import VIDEO_SOURCE, MODEL_PATH, OUTPUT_JSON
 
@@ -166,10 +165,6 @@ def run_inference(
     # Save the last platform data if it exists
     if last_platform_id:
         save_data_to_json(plataform_data, output_json)
-        create_or_update_item(
-            plataform_data[last_platform_id]["type"],
-            plataform_data[last_platform_id]["total_boxes"],
-        )
 
     cap.release()
     if display:
