@@ -1,12 +1,11 @@
 import cv2
 import json
-from services.items import create_or_update_item
-from services.platforms import update_platform
+from services.platforms import update_platform, get_platform
+from services.items import get_item
+from services.robot import update_robot
+
 # Known parameters
-KNOWN_WIDTH = 0.5  # Example: known width of the object in meters
 FOCAL_LENGTH = 800  # Example: focal length of the camera in pixels
-AVERAGE_BOX_DEPTH = 0.5  # Example: average depth of a box in meters
-PALLET_DEPTH = 2.0  # Example: depth of the pallet in meters
 
 # URL of the endpoint to get item description
 
@@ -17,6 +16,15 @@ def estimate_distance(known_width, focal_length, pixel_width):
 
 def draw_polygon(frame, polygon):
     cv2.polylines(frame, [polygon], isClosed=True, color=(0, 255, 0), thickness=2)
+
+
+def get_sizes(platform_code, item_code):
+    platform = get_platform(platform_code)
+    item = get_item(item_code)
+    know_widht = item["dimension"].split("x")[0]
+    box_depth = item["dimension"].split("x")[1]
+    platform_depth = platform["dimension"].split("x")[1]
+    return float(know_widht)/100, float(box_depth)/100, float(platform_depth)/100
 
 
 def draw_text(
@@ -74,8 +82,19 @@ def process_detections(
 
     for i in range(len(detections.xyxy)):
         box_x1, box_y1, box_x2, box_y2 = detections.xyxy[i]
+        if detected_text:
+            # Extract platform ID and box code from detected text
+            if "_" in detected_text:
+                platform_id_text, box_code = detected_text.split("_")
+            else:
+                platform_id_text, box_code = detected_text, ""
+
+            type = box_code
+        else:
+            platform_id_text = ""
+        know_widht, box_depth, platform_depth = get_sizes(platform_id_text, box_code)
         box_width = box_x2 - box_x1
-        distance = estimate_distance(KNOWN_WIDTH, FOCAL_LENGTH, box_width)
+        distance = estimate_distance(know_widht, FOCAL_LENGTH, box_width)
         distances.append(distance)
 
         # Draw a filled rectangle as background for the text
@@ -112,16 +131,6 @@ def process_detections(
                 if platform_id in plataform_data
                 else ""
             )
-            if detected_text:
-                # Extract platform ID and box code from detected text
-                if "_" in detected_text:
-                    platform_id_text, box_code = detected_text.split("_")
-                else:
-                    platform_id_text, box_code = detected_text, ""
-
-                type = box_code
-            else:
-                platform_id_text = ""
 
             # Update platform data and save type
             if platform_id in plataform_data:
@@ -141,8 +150,8 @@ def process_detections(
                 if isinstance(plataform_data[platform_id], dict):
                     box_count = estimate_box_count(
                         distances,
-                        AVERAGE_BOX_DEPTH,
-                        PALLET_DEPTH,
+                        box_depth,
+                        platform_depth,
                         plataform_data[platform_id]["visible_boxes"],
                     )
                     plataform_data[platform_id]["total_boxes"] = box_count
@@ -167,6 +176,12 @@ def process_detections(
                 last_platform_id = platform_id
                 processed_platforms.add(platform_id)
 
+                update_robot(
+                    {
+                        "location": platform_id_text,
+                    }
+                )
+
             draw_text(
                 frame,
                 f"ID: {detections.tracker_id[i]}",
@@ -181,6 +196,11 @@ def process_detections(
             plataform_data[last_platform_id]["platform_id"],
             plataform_data[last_platform_id]["total_boxes"],
             plataform_data[last_platform_id]["type"],
+        )
+        update_robot(
+            {
+                "location": plataform_data[last_platform_id]["platform_id"],
+            }
         )
         last_platform_id = (
             None  # Reset last_platform_id to indicate the platform has left the screen
