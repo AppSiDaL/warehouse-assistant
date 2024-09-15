@@ -1,6 +1,17 @@
 import requests
 ITEM_DESCRIPTION_URL = "http://localhost:8000/api/items"
 
+
+def get_item(item_id):
+    try:
+        response = requests.get(f"{ITEM_DESCRIPTION_URL}/{item_id}")
+        response.raise_for_status()
+        data = response.json()
+        return data
+    except requests.RequestException as e:
+        print(f"Error fetching item description: {e}")
+        return "No description available"
+
 def create_or_update_item(item_id, total_boxes):
     try:
         response = requests.put(
