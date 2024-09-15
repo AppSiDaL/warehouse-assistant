@@ -11,6 +11,8 @@ Base.metadata.create_all(bind=engine)
 db_session = SessionLocal()
 
 # Truncate the items table for SQLite
+db_session.execute(text("DELETE FROM robots;"))
+db_session.execute(text("DELETE FROM platforms;"))
 db_session.execute(text("DELETE FROM items;"))
 db_session.commit()
 
@@ -36,7 +38,8 @@ with open("seeders/platforms.json") as f:
         Platform(
             code=platform["code"],
             items_count=platform["items_count"],
-            dimension=platform["dimension"]
+            dimension=platform["dimension"],
+            position=platform["position"]
         )
         for platform in platforms_data
     ]
