@@ -2,11 +2,11 @@
   import "./ButtonHandler.client";
   import "leaflet/dist/leaflet.css";
   import L from "leaflet";
+  import RobotService from "../services/robot";
+  let map:any;
+  let marker:any;
 
-  let map: any;
-  let marker: any;
-
-  function initMap() {
+  async function initMap() {
     let bounds = [
       [50, 50], // padding
       [847, 1280], // image dimensions
@@ -19,7 +19,11 @@
       maxBounds: bounds as any,
     });
 
-    L.imageOverlay("/map.png", bounds as any).addTo(map);
+    // Cargar la imagen generada por el robot
+    const blob = await RobotService.fetchMap();
+    const url = URL.createObjectURL(blob);
+
+    L.imageOverlay(url, bounds as any).addTo(map);
     map.fitBounds(bounds);
 
     marker = L.marker([50, 50])
@@ -28,7 +32,14 @@
       .openPopup();
   }
 
-  function updateRobotPosition(x: any, y: any) {
+  async function fetchRobotPosition() {
+    const response = await RobotService.fetchRobotPosition();
+    const { platform_position } = await response.json();
+    const [x, y] = platform_position.split(',').map(Number);
+    updateRobotPosition(x, y);
+  }
+
+  function updateRobotPosition(x:any, y:any) {
     if (marker) {
       marker.setLatLng([x, y]);
       map.setView([x, y], map.getZoom());
@@ -38,14 +49,9 @@
   document.addEventListener("DOMContentLoaded", () => {
     initMap();
 
-    // Simulación de actualización de posición del robot
-    setInterval(() => {
-      const x = 50 + Math.random() * 797; // Random x within image width
-      const y = 50 + Math.random() * 1230; // Random y within image height
-      updateRobotPosition(x, y);
-    }, 5000);
+    // Actualizar la posición del robot cada 5 segundos
+    setInterval(fetchRobotPosition, 5000);
   });
 </script>
 
-<h1 class="text-2xl font-bold mb-4">Robot Position</h1>
 <div id="map" class="w-full h-96 rounded-lg shadow-lg"></div>
