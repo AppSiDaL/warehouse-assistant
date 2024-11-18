@@ -1,5 +1,4 @@
 #include <Arduino.h>
-
 #include <AFMotor.h>
 
 // Create motor objects for each motor
@@ -16,10 +15,10 @@ void setup()
   motor3.setSpeed(100);
   motor4.setSpeed(100);
 }
+
 void moveForward()
 {
   Serial.println("Moving forward");
-
   motor1.run(FORWARD);
   motor2.run(FORWARD);
   motor3.run(FORWARD);
@@ -72,30 +71,33 @@ void loop()
   // Check if data is available to read
   if (Serial.available() > 0)
   {
-    // Read the incoming byte
-    char command = Serial.read();
+    // Read the incoming string
+    String command = Serial.readStringUntil('\n');
 
     // Execute the corresponding function based on the command
-    switch (command)
+    if (command == "forward")
     {
-    case 'forward':
       moveForward(); // Full speed forward
-      break;
-    case 'backward':
+    }
+    else if (command == "backward")
+    {
       moveBackward(); // Full speed backward
-      break;
-    case 'left':
+    }
+    else if (command == "left")
+    {
       Rotate_Left(); // Full speed left
-      break;
-    case 'right':
+    }
+    else if (command == "right")
+    {
       Rotate_Right(); // Full speed right
-      break;
-    case 'stop':
+    }
+    else if (command == "stop")
+    {
       STOP(); // Stop the car
-      break;
-    default:
+    }
+    else
+    {
       // Do nothing for unrecognized commands
-      break;
     }
   }
 }
