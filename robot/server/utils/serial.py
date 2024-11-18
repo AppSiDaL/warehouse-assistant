@@ -1,6 +1,6 @@
 import serial
 try:
-    ser = serial.Serial('/dev/ttyACM1', 9600)  # Ajusta el puerto y la velocidad según sea necesario
+    ser = serial.Serial('/dev/ttyACM0', 9600)  # Ajusta el puerto y la velocidad según sea necesario
 except:
     print("No se pudo conectar al puerto")
 
