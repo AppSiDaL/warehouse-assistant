@@ -14,8 +14,16 @@ picam2.start()
 time.sleep(0.1)
 
 # Initialize serial communication
-ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
-ser.flush()
+try:
+    ser = serial.Serial('/dev/ttyACM0', 9600)  # Ajusta el puerto y la velocidad según sea necesario
+except:
+    print("No se pudo conectar al puerto")
+
+def send_command(command):
+    if command in ['forward', 'backward', 'left', 'right', 'stop']:
+        ser.write(command.encode())
+        return {"status": "success", "command": command}
+    return {"status": "error", "message": "Invalid command"}
 
 def process_frame(frame):
     # Convert the frame to grayscale
@@ -47,7 +55,6 @@ def process_frame(frame):
 def compute_direction(lines):
     if lines is None:
         return "forward"
-    print("moving forward")
     
     left_lines = []
     right_lines = []
@@ -77,8 +84,8 @@ while True:
     # Compute the direction based on the detected lines
     direction = compute_direction(lines)
     
-    # Send the direction command via serial communication
-    ser.write(direction.encode('utf-8'))
+    # Send the direction command via the send_command function
+    send_command(direction)
     
     # Display the frame with detected lines
     if lines is not None:
