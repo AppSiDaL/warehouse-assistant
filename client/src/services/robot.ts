@@ -1,5 +1,5 @@
-import { SERVER_URL } from "../constants";
-const URL = `${SERVER_URL}/robot/control`;
+import { ROBOT_URL,SERVER_URL } from "../constants";
+const URL = `${ROBOT_URL}/control`;
 
 const sendCommand = async (command: string): Promise<any> => {
   const response = await fetch(`${URL}/${command}`, {
