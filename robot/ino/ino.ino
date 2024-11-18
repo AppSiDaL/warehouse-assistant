@@ -7,13 +7,15 @@ AF_DCMotor motor2(2, MOTOR12_64KHZ);
 AF_DCMotor motor3(3, MOTOR34_1KHZ);
 AF_DCMotor motor4(4, MOTOR34_1KHZ);
 
+int speed = 250;
+
 void setup()
 {
   Serial.begin(9600);
-  motor1.setSpeed(100);
-  motor2.setSpeed(100);
-  motor3.setSpeed(100);
-  motor4.setSpeed(100);
+  motor1.setSpeed(speed);
+  motor2.setSpeed(speed);
+  motor3.setSpeed(speed);
+  motor4.setSpeed(speed);
 }
 
 void moveForward()
