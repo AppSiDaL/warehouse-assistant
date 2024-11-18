@@ -16,6 +16,7 @@ def draw_polygon(frame, polygon):
 def get_sizes(platform_code, item_code):
     platform = get_platform(platform_code)
     item = get_item(item_code)
+    print(platform, item)
     known_width = item["dimension"].split("x")[0]
     box_depth = item["dimension"].split("x")[1]
     platform_depth = platform["dimension"].split("x")[1]
