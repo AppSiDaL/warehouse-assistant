@@ -2,49 +2,49 @@
   {
     "code": "T-AA01",
     "items_count": 0,
-    "dimension": "100x100x20",
+    "dimension": "100x120x20",
     "position": "710,230,0"
   },
   {
     "code": "T-AA02",
     "items_count": 0,
-    "dimension": "100x100x20",
+    "dimension": "100x120x20",
     "position": "710,355,0"
   },
   {
     "code": "T-AA03",
     "items_count": 0,
-    "dimension": "100x100x20",
+    "dimension": "100x120x20",
     "position": "710,480,0"
   },
   {
     "code": "T-AA04",
     "items_count": 0,
-    "dimension": "100x100x20",
+    "dimension": "100x120x20",
     "position": "710,605,0"
   },
   {
     "code": "T-AA05",
     "items_count": 0,
-    "dimension": "100x100x20",
+    "dimension": "100x120x20",
     "position": "710,730,0"
   },
   {
     "code": "T-AA06",
     "items_count": 0,
-    "dimension": "100x100x20",
+    "dimension": "100x120x20",
     "position": "710,855,0"
   },
   {
     "code": "T-AA07",
     "items_count": 0,
-    "dimension": "100x100x20",
+    "dimension": "100x120x20",
     "position": "710,980,0"
   },
   {
     "code": "T-AA08",
     "items_count": 0,
-    "dimension": "100x100x20",
+    "dimension": "100x120x20",
     "position": "710,1105,0"
   }
 ]
