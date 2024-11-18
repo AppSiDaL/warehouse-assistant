@@ -19,8 +19,7 @@ app = FastAPI(lifespan=lifespan)
 origins = [
     "http://localhost",
     "http://localhost:8000",
-    "http://localhost:3000",  # Añade aquí las URLs de tus frontends
-    "http://your-frontend-domain.com",
+    "http://localhost:3000",
     "http://localhost:4321",
 ]
 
