@@ -91,6 +91,9 @@ while True:
     # Send the direction command via the send_command function
     send_command(direction)
     
+    # Wait for 5 seconds
+    time.sleep(5)
+    
     # Display the frame with detected lines
     if lines is not None:
         for line in lines:
