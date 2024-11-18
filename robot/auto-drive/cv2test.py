@@ -1,15 +1,14 @@
 import cv2
 import numpy as np
 import serial
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+from picamera2 import Picamera2, Preview
 import time
 
-# Initialize the camera and grab a reference to the raw camera capture
-camera = PiCamera()
-camera.resolution = (640, 480)
-camera.framerate = 32
-rawCapture = PiRGBArray(camera, size=(640, 480))
+# Initialize the camera
+picam2 = Picamera2()
+camera_config = picam2.create_preview_configuration(main={"size": (640, 480)})
+picam2.configure(camera_config)
+picam2.start()
 
 # Allow the camera to warmup
 time.sleep(0.1)
@@ -67,12 +66,12 @@ def compute_direction(lines):
     else:
         return "forward"
 
-# Capture frames from the camera
-for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-    image = frame.array
+while True:
+    # Capture frame-by-frame
+    frame = picam2.capture_array()
     
     # Process the frame to detect lines
-    lines = process_frame(image)
+    lines = process_frame(frame)
     
     # Compute the direction based on the detected lines
     direction = compute_direction(lines)
@@ -84,13 +83,11 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     if lines is not None:
         for line in lines:
             x1, y1, x2, y2 = line[0]
-            cv2.line(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
     
-    cv2.imshow("Frame", image)
+    cv2.imshow("Frame", frame)
     
     key = cv2.waitKey(1) & 0xFF
-    rawCapture.truncate(0)
-    
     if key == ord("q"):
         break
 
