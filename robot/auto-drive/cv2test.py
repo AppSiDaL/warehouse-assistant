@@ -47,6 +47,7 @@ def process_frame(frame):
 def compute_direction(lines):
     if lines is None:
         return "forward"
+    print("moving forward")
     
     left_lines = []
     right_lines = []
