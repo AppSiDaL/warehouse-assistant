@@ -1,6 +1,6 @@
 from gpiozero import LED
 
-front_led = LED(17)
+front_led = LED(27)
 
 def front_on():
     front_led.on()
