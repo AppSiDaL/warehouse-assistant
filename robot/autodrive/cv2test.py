@@ -4,7 +4,7 @@ import serial
 from picamera2 import Picamera2, Preview
 import time
 from utils.serial import send_command
-from utils.raspberry import front_off,front_off
+from utils.raspberry import front_off,front_on
 # Initialize the camera
 picam2 = Picamera2()
 camera_config = picam2.create_preview_configuration(main={"size": (640, 480)})
@@ -84,7 +84,7 @@ def capture_and_process_frame():
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     mean_intensity = np.mean(gray)
     if mean_intensity < 50:  # Threshold for low light condition
-        front_off()
+        front_on()
     else:
         front_off()
     
