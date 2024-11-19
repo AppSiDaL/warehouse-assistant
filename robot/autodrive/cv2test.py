@@ -83,7 +83,7 @@ def capture_and_process_frame():
     # Check for low light conditions
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     mean_intensity = np.mean(gray)
-    if mean_intensity < 50:  # Threshold for low light condition
+    if mean_intensity < 70:  # Threshold for low light condition
         print("Low light condition detected")
         front_on()
     else:
