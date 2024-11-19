@@ -3,9 +3,8 @@ import numpy as np
 import serial
 from picamera2 import Picamera2, Preview
 import time
-
-
-
+from utils.serial import send_command
+from utils.raspberry import front_off,front_off
 # Initialize the camera
 picam2 = Picamera2()
 camera_config = picam2.create_preview_configuration(main={"size": (640, 480)})
@@ -14,19 +13,6 @@ picam2.start()
 
 # Allow the camera to warmup
 time.sleep(0.1)
-
-# Initialize serial communication
-try:
-    ser = serial.Serial('/dev/ttyACM0', 9600)  # Ajusta el puerto y la velocidad según sea necesario
-except:
-    print("No se pudo conectar al puerto")
-
-def send_command(command):
-    print(command)
-    if command in ['forward', 'backward', 'left', 'right', 'stop']:
-        ser.write(command.encode())
-        return {"status": "success", "command": command}
-    return {"status": "error", "message": "Invalid command"}
 
 def process_frame(frame):
     # Convert the frame to grayscale
@@ -94,6 +80,14 @@ def capture_and_process_frame():
     # Capture frame-by-frame
     frame = picam2.capture_array()
     
+    # Check for low light conditions
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    mean_intensity = np.mean(gray)
+    if mean_intensity < 50:  # Threshold for low light condition
+        front_off()
+    else:
+        front_off()
+    
     # Process the frame to detect lines
     lines = process_frame(frame)
     
@@ -113,4 +107,3 @@ def capture_and_process_frame():
     cv2.arrowedLine(frame, start_point, end_point, (0, 0, 255), 5)
     
     return frame
-
