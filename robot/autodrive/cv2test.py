@@ -84,8 +84,10 @@ def capture_and_process_frame():
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     mean_intensity = np.mean(gray)
     if mean_intensity < 50:  # Threshold for low light condition
+        print("Low light condition detected")
         front_on()
     else:
+        print("Normal light condition")
         front_off()
     
     # Process the frame to detect lines
