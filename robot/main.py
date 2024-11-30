@@ -116,8 +116,8 @@ def capture_and_process_frame():
             send_command("shut_front")
         
         # Process the frame to detect lines
-        time.sleep(1)
         lines = process_frame(frame)
+        time.sleep(1)
         
         # Compute the direction based on the detected lines
         direction, start_point, end_point = compute_direction(lines, frame)
