@@ -1,10 +1,10 @@
 import cv2
 import numpy as np
-import serial
 from picamera2 import Picamera2, Preview
 import time
 #from utils.serial import send_command
 from utils.raspberry import front_off,front_on
+from utils.serial import send_command
 # Initialize the camera
 picam2 = Picamera2()
 camera_config = picam2.create_preview_configuration(main={"size": (640, 480)})
@@ -97,7 +97,7 @@ def capture_and_process_frame():
     direction, start_point, end_point = compute_direction(lines, frame)
     
     # Send the direction command via the send_command function
-    #send_command(direction)
+    send_command(direction)
     
     # Display the frame with detected lines and direction arrow
     if lines is not None:
