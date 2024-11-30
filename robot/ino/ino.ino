@@ -7,7 +7,7 @@ AF_DCMotor motor2(2, MOTOR12_64KHZ);
 AF_DCMotor motor3(3, MOTOR34_1KHZ);
 AF_DCMotor motor4(4, MOTOR34_1KHZ);
 
-int speed = 200;
+int speed = 250;
 
 void setup()
 {
@@ -25,7 +25,6 @@ void moveForward()
   motor2.run(FORWARD);
   motor3.run(FORWARD);
   motor4.run(FORWARD);
-  delay(3000);
 }
 
 void moveBackward()
@@ -35,7 +34,6 @@ void moveBackward()
   motor2.run(BACKWARD);
   motor3.run(BACKWARD);
   motor4.run(BACKWARD);
-  delay(3000);
 }
 
 void Rotate_Right()
@@ -43,9 +41,8 @@ void Rotate_Right()
   Serial.println("Rotating clockwise");
   motor1.run(FORWARD);
   motor2.run(BACKWARD);
-  motor3.run(FORWARD);
-  motor4.run(BACKWARD);
-  delay(3000);
+  motor3.run(BACKWARD);
+  motor4.run(FORWARD);
 }
 
 void Rotate_Left()
@@ -53,9 +50,8 @@ void Rotate_Left()
   Serial.println("Rotating counterclockwise");
   motor1.run(BACKWARD);
   motor2.run(FORWARD);
-  motor3.run(BACKWARD);
-  motor4.run(FORWARD);
-  delay(3000);
+  motor3.run(FORWARD);
+  motor4.run(BACKWARD);
 }
 
 void STOP()
