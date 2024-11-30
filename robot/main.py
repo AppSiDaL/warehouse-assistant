@@ -112,7 +112,7 @@ def capture_and_process_frame():
         
         # Compute the direction based on the detected lines
         direction, start_point, end_point = compute_direction(lines, frame)
-        
+        time.sleep(2)
         # Send the direction command via the send_command function
         send_command(direction)
         
