@@ -1,10 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from utils.serial import send_command
-from fastapi import FastAPI, APIRouter
 from fastapi.responses import StreamingResponse
 import io
 import cv2
+import numpy as np
+from picamera2 import Picamera2, Preview
+import time
+import threading
+
 app = FastAPI()
 
 app.add_middleware(
@@ -14,18 +18,6 @@ app.add_middleware(
     allow_methods=["*"],  # Permitir cualquier método
     allow_headers=["*"],  # Permitir cualquier encabezado
 )
-
-import cv2
-import numpy as np
-from picamera2 import Picamera2, Preview
-import time
-from utils.serial import send_command
-from fastapi import FastAPI
-from fastapi.responses import StreamingResponse
-import threading
-import io
-
-app = FastAPI()
 
 # Initialize the camera
 picam2 = Picamera2()
@@ -117,7 +109,6 @@ def capture_and_process_frame():
         
         # Process the frame to detect lines
         lines = process_frame(frame)
-        time.sleep(1)
         
         # Compute the direction based on the detected lines
         direction, start_point, end_point = compute_direction(lines, frame)
@@ -142,15 +133,19 @@ thread = threading.Thread(target=capture_and_process_frame)
 thread.daemon = True
 thread.start()
 
+def generate_frames():
+    global processed_frame
+    while True:
+        if processed_frame is not None:
+            _, jpeg = cv2.imencode('.jpg', processed_frame)
+            frame = jpeg.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        time.sleep(0.1)  # Adjust the sleep time as needed
+
 @app.get("/drive")
 def get_frame():
-    global processed_frame
-    if processed_frame is None:
-        return {"error": "Frame not available"}
-    
-    # Encode the frame in JPEG format
-    _, jpeg = cv2.imencode('.jpg', processed_frame)
-    return StreamingResponse(io.BytesIO(jpeg.tobytes()), media_type="image/jpeg")
+    return StreamingResponse(generate_frames(), media_type="multipart/x-mixed-replace; boundary=frame")
 
 # Run the FastAPI app
 if __name__ == "__main__":
