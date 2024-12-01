@@ -32,14 +32,18 @@ time.sleep(0.1)
 processed_frame = None
 
 def process_frame(frame):
-    # Convert the frame to grayscale
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # Convert the frame to HSV color space
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
-    # Threshold the image to get only black colors
-    _, black_mask = cv2.threshold(gray, 50, 255, cv2.THRESH_BINARY_INV)
+    # Define the range for yellow color in HSV
+    lower_yellow = np.array([20, 100, 100])
+    upper_yellow = np.array([30, 255, 255])
+    
+    # Threshold the HSV image to get only yellow colors
+    yellow_mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
     
     # Apply Gaussian blur to the mask
-    blur = cv2.GaussianBlur(black_mask, (5, 5), 0)
+    blur = cv2.GaussianBlur(yellow_mask, (5, 5), 0)
     
     # Perform edge detection
     edges = cv2.Canny(blur, 50, 150)
@@ -112,7 +116,7 @@ def capture_and_process_frame():
         
         # Compute the direction based on the detected lines
         direction, start_point, end_point = compute_direction(lines, frame)
-        time.sleep(1)
+        
         # Send the direction command via the send_command function
         send_command(direction)
         
