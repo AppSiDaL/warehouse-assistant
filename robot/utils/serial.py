@@ -20,6 +20,7 @@ def get_serial_port():
 
 try:
     port = get_serial_port()
+    print(f"Conectando al puerto {port}")
     ser = serial.Serial(
         port, 9600
     )  # Ajusta el puerto y la velocidad según sea necesario
