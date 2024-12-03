@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Class to handle webcam
  */

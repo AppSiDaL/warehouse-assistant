@@ -1,6 +1,11 @@
 import "./loader.css";
 
-const Loader = (props) => {
+interface LoaderProps {
+  children?: React.ReactNode;
+  [key: string]: unknown;
+}
+
+const Loader = (props: LoaderProps) => {
   return (
     <div className="wrapper" {...props}>
       <div className="spinner"></div>
