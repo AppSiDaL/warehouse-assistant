@@ -1,0 +1,22 @@
+description: Ultralytics best model trained on /content/product-5/data.yaml
+author: Ultralytics
+date: '2024-12-03T01:38:03.176420'
+version: 8.3.40
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 640
+- 640
+names:
+  0: box
+  1: canels-mint
+  2: damaged-box
+  3: despejada
+  4: halls-blueberry
+  5: leche-gansito
+  6: mazapan
+  7: platform
+  8: yakult
