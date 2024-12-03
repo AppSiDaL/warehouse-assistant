@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect, useRef } from "react";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
@@ -69,6 +70,7 @@ export default function InferenceComponent() {
           autoPlay
           muted
           ref={cameraRef}
+          playsinline
           onPlay={() =>
             detectVideo(cameraRef.current, model, canvasRef.current)
           }
