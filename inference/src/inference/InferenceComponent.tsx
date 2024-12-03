@@ -70,7 +70,7 @@ export default function InferenceComponent() {
           autoPlay
           muted
           ref={cameraRef}
-          playsinline
+          playsInline
           onPlay={() =>
             detectVideo(cameraRef.current, model, canvasRef.current)
           }
