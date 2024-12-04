@@ -50,7 +50,7 @@ import os
 
 @app.get("/current_command")
 def get_current_command():
-    temp_file_path = "command.txt"  # Reemplaza con la ruta correcta del archivo temporal
+    temp_file_path = "autodrive/command.txt"  # Reemplaza con la ruta correcta del archivo temporal
     if os.path.exists(temp_file_path):
         with open(temp_file_path, 'r') as f:
             command = f.read().strip()
