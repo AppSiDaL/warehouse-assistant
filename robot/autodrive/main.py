@@ -19,14 +19,6 @@ try:
 except:
     print("No se pudo conectar al puerto")
     
-def send_command(command):
-    print("moving",command)
-    time.sleep(2)
-    if command in ['forward', 'backward', 'left', 'right', 'stop']:
-        ser.write(command.encode())
-        return {"status": "success", "command": command}
-    return {"status": "error", "message": "Invalid command"}
-
 # -----------------------------------------------------------------------------------------------
 # User-defined class to be used in the callback function
 # -----------------------------------------------------------------------------------------------
@@ -42,8 +34,34 @@ class user_app_callback_class(app_callback_class):
 # -----------------------------------------------------------------------------------------------
 # User-defined callback function
 # -----------------------------------------------------------------------------------------------
+import time
 
-# This is the callback function that will be called when data is available from the pipeline
+class AutonomousControl:
+    def __init__(self):
+        self.last_command_time = time.time()
+        self.command_interval = 1  # Cada 1 segundo aprox (10 cm)
+        self.last_command = None
+
+    def calculate_steering_command(self, left_line, right_line):
+        if left_line and right_line:
+            return "forward"
+        elif left_line:
+            return "right"
+        elif right_line:
+            return "left"
+        else:
+            return "stop"
+
+    def send_command(self, command):
+        current_time = time.time()
+        if command != self.last_command or (current_time - self.last_command_time) > self.command_interval:
+            # Envía el comando solo si ha pasado suficiente tiempo o si el comando es diferente al anterior
+            print(f"Sending command: {command}")
+            ser.write(command.encode())
+            # user_data.send_serial_command(command)  # Descomentar al integrar con el puerto serial
+            self.last_command_time = current_time
+            self.last_command = command
+
 def app_callback(pad, info, user_data):
     buffer = info.get_buffer()
     if buffer is None:
@@ -51,7 +69,7 @@ def app_callback(pad, info, user_data):
 
     frame = get_numpy_from_buffer(buffer, *get_caps_from_pad(pad))
     detections = hailo.get_roi_from_buffer(buffer).get_objects_typed(hailo.HAILO_DETECTION)
-    
+
     left_line = right_line = False
     for detection in detections:
         label = detection.get_label()
@@ -65,23 +83,13 @@ def app_callback(pad, info, user_data):
             elif x_center > frame.shape[1] * 0.6:
                 right_line = True
 
-    # Control lógico basado en detecciones
-    if left_line and right_line:
-        command = "forward"
-    elif left_line:
-        command = "right"
-    elif right_line:
-        command = "left"
-    else:
-        command = "stop"
-
-    print(f"Command: {command}")
-    send_command(command)
+    control = user_data  # Usar la clase para enviar comandos controlados
+    command = control.calculate_steering_command(left_line, right_line)
+    control.send_command(command)
 
     return Gst.PadProbeReturn.OK
 
 if __name__ == "__main__":
-    # Create an instance of the user app callback class
-    user_data = user_app_callback_class()
-    app = GStreamerDetectionApp(app_callback, user_data)
+    control = AutonomousControl()  # Instancia para gestionar comandos
+    app = GStreamerDetectionApp(app_callback, control)
     app.run()
