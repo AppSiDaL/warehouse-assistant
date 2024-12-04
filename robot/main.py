@@ -9,13 +9,13 @@ from gi.repository import Gst, GLib
 import os
 import numpy as np
 import hailo
-from autodrive.hailo_rpi_common import (
+from hailo_rpi_common import (
     get_caps_from_pad,
     get_numpy_from_buffer,
     app_callback_class,
 )
 import serial
-from autodrive.detection_pipeline import GStreamerDetectionApp
+from detection_pipeline import GStreamerDetectionApp
 
 app = FastAPI()
 

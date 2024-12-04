@@ -5,13 +5,13 @@ import os
 import numpy as np
 import cv2
 import hailo
-from hailo_rpi_common import (
+from robot.hailo_rpi_common import (
     get_caps_from_pad,
     get_numpy_from_buffer,
     app_callback_class,
 )
 import time
-from detection_pipeline import GStreamerDetectionApp
+from robot.detection_pipeline import GStreamerDetectionApp
 import serial
 
 try:
