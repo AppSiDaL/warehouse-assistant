@@ -71,31 +71,31 @@ void executeSequence()
 {
   // Secuencia de comandos predefinidos
   moveBackward();
-  delay(2000); // Ajusta el tiempo según la distancia a recorrer
+  delay(3000); // Ajusta el tiempo según la distancia a recorrer
   STOP();
 
   Rotate_Left();
-  delay(1000); // Ajusta el tiempo según el ángulo de giro
+  delay(2000); // Ajusta el tiempo según el ángulo de giro
   STOP();
 
   moveForward();
-  delay(3000); // Ajusta el tiempo según la distancia a recorrer
+  delay(5000); // Ajusta el tiempo según la distancia a recorrer
   STOP();
 
-  Rotate_Right();
-  delay(1000); // Ajusta el tiempo según el ángulo de giro
-  STOP();
-
-  moveForward();
-  delay(3000); // Ajusta el tiempo según la distancia a recorrer
-  STOP();
-
-  Rotate_Right();
-  delay(1000); // Ajusta el tiempo según el ángulo de giro
+  Rotate_Left();
+  delay(2000); // Ajusta el tiempo según el ángulo de giro
   STOP();
 
   moveForward();
-  delay(3000); // Ajusta el tiempo según la distancia a recorrer
+  delay(5000); // Ajusta el tiempo según la distancia a recorrer
+  STOP();
+
+  Rotate_Left();
+  delay(2000); // Ajusta el tiempo según el ángulo de giro
+  STOP();
+
+  moveForward();
+  delay(7000); // Ajusta el tiempo según la distancia a recorrer
   STOP();
 }
 
