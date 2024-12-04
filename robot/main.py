@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -71,12 +72,25 @@ class AutonomousControl:
             self.last_command_time = current_time
             self.last_command = command
 
+# Global variable to store the current frame
+current_frame = None
+def generate_frames(camera):
+    while True:
+        ret, frame = camera.read()
+        if not ret:
+            break
+        _, jpeg = cv2.imencode(".jpg", frame)
+        frame = jpeg.tobytes()
+        yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+        time.sleep(0.1)
 def app_callback(pad, info, user_data):
+    global current_frame
     buffer = info.get_buffer()
     if buffer is None:
         return Gst.PadProbeReturn.OK
 
     frame = get_numpy_from_buffer(buffer, *get_caps_from_pad(pad))
+    current_frame = frame  # Store the current frame
     detections = hailo.get_roi_from_buffer(buffer).get_objects_typed(hailo.HAILO_DETECTION)
 
     left_line = right_line = False
@@ -100,14 +114,13 @@ def app_callback(pad, info, user_data):
 
 control = AutonomousControl()
 
-def generate_frames(camera):
+def generate_frames_from_callback():
+    global current_frame
     while True:
-        ret, frame = camera.read()
-        if not ret:
-            break
-        _, jpeg = cv2.imencode(".jpg", frame)
-        frame = jpeg.tobytes()
-        yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
+        if current_frame is not None:
+            _, jpeg = cv2.imencode(".jpg", current_frame)
+            frame = jpeg.tobytes()
+            yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
         time.sleep(0.1)
 
 @app.get("/camera1")
@@ -125,6 +138,12 @@ def get_frame_camera2():
 @app.get("/current_command")
 def get_current_command():
     return {"current_command": control.last_command}
+
+@app.get("/drive")
+def drive():
+    return StreamingResponse(
+        generate_frames_from_callback(), media_type="multipart/x-mixed-replace; boundary=frame"
+    )
 
 if __name__ == "__main__":
     import uvicorn
