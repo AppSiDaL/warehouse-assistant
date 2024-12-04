@@ -59,7 +59,7 @@ def app_callback(pad, info, user_data):
         confidence = detection.get_confidence()
 
         if label == "limiter-line" and confidence > 0.75:
-            x_center = (bbox.xmin + bbox.xmax) / 2
+            x_center = (bbox.xmin() + bbox.xmax()) / 2
             if x_center < frame.shape[1] * 0.4:
                 left_line = True
             elif x_center > frame.shape[1] * 0.6:
