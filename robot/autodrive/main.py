@@ -13,6 +13,7 @@ from hailo_rpi_common import (
 import time
 from detection_pipeline import GStreamerDetectionApp
 import serial
+import tempfile
 
 try:
     ser = serial.Serial('/dev/ttyACM0', 9600)  # Ajusta el puerto y la velocidad según sea necesario
@@ -41,6 +42,7 @@ class AutonomousControl:
         self.last_command_time = time.time()
         self.command_interval = 1  # Cada 1 segundo aprox (10 cm)
         self.last_command = None
+        self.temp_file = tempfile.NamedTemporaryFile(delete=False)
 
     def calculate_steering_command(self, left_line, right_line):
         if left_line and right_line:
@@ -58,7 +60,8 @@ class AutonomousControl:
             # Envía el comando solo si ha pasado suficiente tiempo o si el comando es diferente al anterior
             print(f"Sending command: {command}")
             ser.write(command.encode())
-            # user_data.send_serial_command(command)  # Descomentar al integrar con el puerto serial
+            with open(self.temp_file.name, 'w') as f:
+                f.write(command)
             self.last_command_time = current_time
             self.last_command = command
 

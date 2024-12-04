@@ -46,6 +46,17 @@ def get_frame_camera2():
         generate_frames(camera2), media_type="multipart/x-mixed-replace; boundary=frame"
     )
 
+import os
+
+@app.get("/current_command")
+def get_current_command():
+    temp_file_path = "command.txt"  # Reemplaza con la ruta correcta del archivo temporal
+    if os.path.exists(temp_file_path):
+        with open(temp_file_path, 'r') as f:
+            command = f.read().strip()
+        return {"command": command}
+    else:
+        return {"command": "No command available"}
 
 # Run the FastAPI app
 if __name__ == "__main__":
