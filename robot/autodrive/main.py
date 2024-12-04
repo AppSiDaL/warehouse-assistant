@@ -51,14 +51,9 @@ class AutonomousControl:
             return "stop"
 
     def send_command(self, command):
-        current_time = time.time()
-        if command != self.last_command or (current_time - self.last_command_time) > self.command_interval:
-            # Envía el comando solo si ha pasado suficiente tiempo o si el comando es diferente al anterior
-            print(f"Sending command: {command}")
-            with open("../command.txt", 'w') as f:
-                f.write(command)
-            self.last_command_time = current_time
-            self.last_command = command
+        print(f"Sending command: {command}")
+        with open("../command.txt", 'w') as f:
+            f.write(command)
 
 def app_callback(pad, info, user_data):
     buffer = info.get_buffer()
@@ -91,3 +86,5 @@ if __name__ == "__main__":
     control = AutonomousControl()  # Instancia para gestionar comandos
     app = GStreamerDetectionApp(app_callback, control)
     app.run()
+    
+#python autodrive/main.py --labels-json resources/path-labels.json --hef resources/path2.hef --input rpi
