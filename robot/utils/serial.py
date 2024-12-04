@@ -4,7 +4,7 @@ import subprocess
 def get_serial_port():
     try:
         result = subprocess.run(['ls', '-l', '/dev/ttyACM*'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print(result.returncode)
+        print(result)
         if result.returncode == 0:
             port = result.stdout.decode('utf-8').split('\n')[0].split()[-1]
             return port
