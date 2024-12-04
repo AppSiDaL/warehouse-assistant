@@ -10,9 +10,8 @@ from hailo_rpi_common import (
     get_numpy_from_buffer,
     app_callback_class,
 )
-
+import time
 from detection_pipeline import GStreamerDetectionApp
-
 import serial
 
 try:
@@ -22,6 +21,7 @@ except:
     
 def send_command(command):
     print("moving",command)
+    time.sleep(2)
     if command in ['forward', 'backward', 'left', 'right', 'stop']:
         ser.write(command.encode())
         return {"status": "success", "command": command}
