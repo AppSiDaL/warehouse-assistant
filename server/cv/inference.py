@@ -103,6 +103,7 @@ def run_inference(
             ]
 
             # Display box count within the polygon on the frame
+            print(f"Boxes in polygon: {len(box_detections)}")
             draw_text(
                 frame,
                 f"Boxes in polygon: {len(box_detections)}",

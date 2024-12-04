@@ -1,50 +1,8 @@
 {
-    "166": {
-        "visible_boxes": 6,
-        "total_boxes": 18,
+    "64": {
+        "visible_boxes": 20,
+        "total_boxes": 59,
         "type": "",
         "platform_id": "T-AA01"
-    },
-    "172": {
-        "visible_boxes": 6,
-        "total_boxes": 18,
-        "type": "",
-        "platform_id": "T-AA02"
-    },
-    "174": {
-        "visible_boxes": 6,
-        "total_boxes": 18,
-        "type": "",
-        "platform_id": "T-AA03"
-    },
-    "179": {
-        "visible_boxes": 6,
-        "total_boxes": 18,
-        "type": "",
-        "platform_id": "T-AA04"
-    },
-    "188": {
-        "visible_boxes": 6,
-        "total_boxes": 18,
-        "type": "",
-        "platform_id": "T-AA05"
-    },
-    "192": {
-        "visible_boxes": 6,
-        "total_boxes": 18,
-        "type": "",
-        "platform_id": "T-AA06"
-    },
-    "195": {
-        "visible_boxes": 6,
-        "total_boxes": 18,
-        "type": "",
-        "platform_id": "T-AA07"
-    },
-    "199": {
-        "visible_boxes": 6,
-        "total_boxes": 18,
-        "type": "",
-        "platform_id": "T-AA08"
     }
 }

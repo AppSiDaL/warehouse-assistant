@@ -65,9 +65,20 @@ def opencv_stream(video_source, model_path, output_json):
         yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n\r\n")
 
 
-@router.get("/run_inference")
+@router.get("/run_inference1")
 def run_inference_endpoint(
-    video_source: int = Query(VIDEO_SOURCE),
+    video_source: str = "http://raspberrypi.local:8080/cam1",
+    model_path: str = Query(MODEL_PATH),
+    output_json: str = Query(OUTPUT_JSON),
+):
+    return StreamingResponse(
+        opencv_stream(video_source, model_path, output_json),
+        media_type="multipart/x-mixed-replace; boundary=frame",
+    )
+
+@router.get("/run_inference2")
+def run_inference_endpoint(
+    video_source: str = "http://raspberrypi.local:8080/cam2",
     model_path: str = Query(MODEL_PATH),
     output_json: str = Query(OUTPUT_JSON),
 ):
