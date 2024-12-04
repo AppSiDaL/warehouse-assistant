@@ -12,7 +12,7 @@ def send_command(command):
         return {"status": "success", "command": command}
     return {"status": "error", "message": "Invalid command"}
 
-for i in range(10):
+while True:
     send_command("forward")
     send_command("backward")
     send_command("left")
