@@ -17,8 +17,4 @@ while True:
     time.sleep(2)
     send_command("backward")
     time.sleep(2)
-    send_command("left")
-    time.sleep(2)
-    send_command("right")
-    time.sleep(2)
     send_command("stop ")
