@@ -13,7 +13,7 @@ int speed = 250;
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(2000000);
   motor1.setSpeed(speed);
   motor2.setSpeed(speed);
   motor3.setSpeed(speed);
