@@ -15,10 +15,6 @@ from detection_pipeline import GStreamerDetectionApp
 import serial
 import tempfile
 
-try:
-    ser = serial.Serial('/dev/ttyACM0', 9600)  # Ajusta el puerto y la velocidad según sea necesario
-except:
-    print("No se pudo conectar al puerto")
     
 # -----------------------------------------------------------------------------------------------
 # User-defined class to be used in the callback function
@@ -59,7 +55,6 @@ class AutonomousControl:
         if command != self.last_command or (current_time - self.last_command_time) > self.command_interval:
             # Envía el comando solo si ha pasado suficiente tiempo o si el comando es diferente al anterior
             print(f"Sending command: {command}")
-            ser.write(command.encode())
             with open(self.temp_file.name, 'w') as f:
                 f.write(command)
             self.last_command_time = current_time
