@@ -67,7 +67,7 @@ def opencv_stream(video_source, model_path, output_json):
 
 @router.get("/run_inference1")
 def run_inference_endpoint(
-    video_source: str = "http://raspberrypi.local:8080/cam1",
+    video_source: str = "http://raspberrypi.local:8000/cam1",
     model_path: str = Query(MODEL_PATH),
     output_json: str = Query(OUTPUT_JSON),
 ):
@@ -78,7 +78,7 @@ def run_inference_endpoint(
 
 @router.get("/run_inference2")
 def run_inference_endpoint(
-    video_source: str = "http://raspberrypi.local:8080/cam2",
+    video_source: str = "http://raspberrypi.local:8000/cam2",
     model_path: str = Query(MODEL_PATH),
     output_json: str = Query(OUTPUT_JSON),
 ):
