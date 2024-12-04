@@ -52,7 +52,7 @@ class AutonomousControl:
 
     def send_command(self, command):
         print(f"Sending command: {command}")
-        with open("../command.txt", 'w') as f:
+        with open("command.txt", 'w') as f:
             f.write(command)
 
 def app_callback(pad, info, user_data):
