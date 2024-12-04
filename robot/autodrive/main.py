@@ -55,7 +55,7 @@ class AutonomousControl:
         if command != self.last_command or (current_time - self.last_command_time) > self.command_interval:
             # Envía el comando solo si ha pasado suficiente tiempo o si el comando es diferente al anterior
             print(f"Sending command: {command}")
-            with open("command.txt", 'w') as f:
+            with open("../command.txt", 'w') as f:
                 f.write(command)
             self.last_command_time = current_time
             self.last_command = command
