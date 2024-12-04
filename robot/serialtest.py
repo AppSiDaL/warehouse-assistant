@@ -13,9 +13,5 @@ def send_command(command):
     return {"status": "error", "message": "Invalid command"}
 
 while True:
-    send_command("forward")
-    time.sleep(2)
-    send_command("backward")
-    time.sleep(2)
     send_command("stop ")
     time.sleep(2)
