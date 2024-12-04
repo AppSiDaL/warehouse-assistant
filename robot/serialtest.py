@@ -1,5 +1,5 @@
 import serial
-
+import time
 try:
     ser = serial.Serial('/dev/ttyACM0', 9600)  # Ajusta el puerto y la velocidad según sea necesario
 except:
@@ -14,7 +14,11 @@ def send_command(command):
 
 while True:
     send_command("forward")
+    time.sleep(2)
     send_command("backward")
+    time.sleep(2)
     send_command("left")
+    time.sleep(2)
     send_command("right")
+    time.sleep(2)
     send_command("stop ")
