@@ -18,3 +18,4 @@ while True:
     send_command("backward")
     time.sleep(2)
     send_command("stop ")
+    time.sleep(2)
