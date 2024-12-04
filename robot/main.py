@@ -15,8 +15,8 @@ app.add_middleware(
 )
 
 # Open the two cameras
-camera1 = cv2.VideoCapture(0)
-camera2 = cv2.VideoCapture(2)
+camera1 = cv2.VideoCapture(1)
+camera2 = cv2.VideoCapture(0)
 
 # Allow the cameras to warmup
 time.sleep(0.1)
