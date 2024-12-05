@@ -15,7 +15,7 @@ from detection_pipeline import GStreamerDetectionApp
 from serialcom import send_command
 import tempfile
 import threading
-from raspberry import front_on, front_off
+from raspberry import front_on, front_off,left_off,right_off
 
 # -----------------------------------------------------------------------------------------------
 # User-defined class to be used in the callback function
@@ -111,6 +111,9 @@ if __name__ == "__main__":
 
         app = GStreamerDetectionApp(app_callback, control)
         app.run()
+        front_off()
+        left_off()
+        right_off()
     except:
         front_off()
         
