@@ -81,11 +81,6 @@ void executeSequence()
   for (int i = 0; i < 335; i++)
   {
     delay(10);
-    if (stopSequence)
-    {
-      STOP();
-      return;
-    }
   }
   STOP();
 
@@ -102,7 +97,7 @@ void executeSequence()
   STOP();
 
   moveForward();
-  for (int i = 0; i < 675; i++)
+  for (int i = 0; i < 690; i++)
   {
     delay(10);
     if (stopSequence)
@@ -114,7 +109,7 @@ void executeSequence()
   STOP();
 
   Rotate_Left();
-  for (int i = 0; i < 200; i++)
+  for (int i = 0; i < 198; i++)
   {
     delay(10);
     if (stopSequence)
@@ -199,7 +194,6 @@ void loop()
     else if (command == "stop")
     {
       stopSequence = true;
-      STOP();
     }
     else if (command == "left" && movingForward)
     {
@@ -207,6 +201,7 @@ void loop()
       Rotate_Left();
       delay(500);    // Adjust the time for a small turn
       moveForward(); // Continue moving forward after the turn
+      stopSequence = false;
     }
     else if (command == "right" && movingForward)
     {
@@ -214,6 +209,7 @@ void loop()
       Rotate_Right();
       delay(500);    // Adjust the time for a small turn
       moveForward(); // Continue moving forward after the turn
+      stopSequence = false;
     }
   }
 }

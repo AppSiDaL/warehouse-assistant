@@ -15,6 +15,7 @@ from detection_pipeline import GStreamerDetectionApp
 from serialcom import send_command
 import tempfile
 import threading
+from raspberry import front_on, front_off
 
 # -----------------------------------------------------------------------------------------------
 # User-defined class to be used in the callback function
@@ -61,7 +62,7 @@ class AutonomousControl:
                     command = self.command_queue.pop(0)
                 print(f"Sending command: {command}")
                 send_command(command)
-            time.sleep(2)  # Adjust the sleep time as needed
+            time.sleep(0.1)  # Adjust the sleep time as needed
 
 def app_callback(pad, info, user_data):
     buffer = info.get_buffer()
@@ -69,6 +70,17 @@ def app_callback(pad, info, user_data):
         return Gst.PadProbeReturn.OK
 
     frame = get_numpy_from_buffer(buffer, *get_caps_from_pad(pad))
+
+    # Calculate the average brightness of the frame
+    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    avg_brightness = np.mean(gray_frame)
+    print(f"Average brightness: {avg_brightness}")
+
+    if avg_brightness < 80:  # Adjust the threshold as needed
+        front_on()
+    else:
+        front_off()
+
     detections = hailo.get_roi_from_buffer(buffer).get_objects_typed(hailo.HAILO_DETECTION)
 
     left_line = right_line = False
