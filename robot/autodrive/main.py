@@ -103,10 +103,14 @@ def app_callback(pad, info, user_data):
     return Gst.PadProbeReturn.OK
 
 if __name__ == "__main__":
-    control = AutonomousControl()  # Instancia para gestionar comandos
-    command_thread = threading.Thread(target=control.send_commands)
-    command_thread.daemon = True
-    command_thread.start()
+    try:
+        control = AutonomousControl()  # Instancia para gestionar comandos
+        command_thread = threading.Thread(target=control.send_commands)
+        command_thread.daemon = True
+        command_thread.start()
 
-    app = GStreamerDetectionApp(app_callback, control)
-    app.run()
+        app = GStreamerDetectionApp(app_callback, control)
+        app.run()
+    except:
+        front_off()
+        
