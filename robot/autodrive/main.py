@@ -12,10 +12,10 @@ from hailo_rpi_common import (
 )
 import time
 from detection_pipeline import GStreamerDetectionApp
-import serial
+from serialcom import send_command
 import tempfile
+import threading
 
-    
 # -----------------------------------------------------------------------------------------------
 # User-defined class to be used in the callback function
 # -----------------------------------------------------------------------------------------------
@@ -31,18 +31,18 @@ class user_app_callback_class(app_callback_class):
 # -----------------------------------------------------------------------------------------------
 # User-defined callback function
 # -----------------------------------------------------------------------------------------------
-import time
-
 class AutonomousControl:
     def __init__(self):
         self.last_command_time = time.time()
         self.command_interval = 1  # Cada 1 segundo aprox (10 cm)
         self.last_command = None
         self.temp_file = tempfile.NamedTemporaryFile(delete=False)
+        self.command_queue = []
+        self.lock = threading.Lock()
 
     def calculate_steering_command(self, left_line, right_line):
         if left_line and right_line:
-            return "forward"
+            return "stop"
         elif left_line:
             return "right"
         elif right_line:
@@ -50,10 +50,18 @@ class AutonomousControl:
         else:
             return "stop"
 
-    def send_command(self, command):
-        print(f"Sending command: {command}")
-        with open("command.txt", 'w') as f:
-            f.write(command)
+    def add_command(self, command):
+        with self.lock:
+            self.command_queue.append(command)
+
+    def send_commands(self):
+        while True:
+            if self.command_queue:
+                with self.lock:
+                    command = self.command_queue.pop(0)
+                print(f"Sending command: {command}")
+                send_command(command)
+            time.sleep(2)  # Adjust the sleep time as needed
 
 def app_callback(pad, info, user_data):
     buffer = info.get_buffer()
@@ -78,13 +86,15 @@ def app_callback(pad, info, user_data):
 
     control = user_data  # Usar la clase para enviar comandos controlados
     command = control.calculate_steering_command(left_line, right_line)
-    control.send_command(command)
+    control.add_command(command)
 
     return Gst.PadProbeReturn.OK
 
 if __name__ == "__main__":
     control = AutonomousControl()  # Instancia para gestionar comandos
+    command_thread = threading.Thread(target=control.send_commands)
+    command_thread.daemon = True
+    command_thread.start()
+
     app = GStreamerDetectionApp(app_callback, control)
     app.run()
-    
-#python autodrive/main.py --labels-json resources/path-labels.json --hef resources/path2.hef --input rpi

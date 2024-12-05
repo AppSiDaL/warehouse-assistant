@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 import cv2
 import time
-from utils.serial import send_command
+from autodrive.serialcom import send_command
 
 app = FastAPI()
 

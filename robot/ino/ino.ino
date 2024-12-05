@@ -10,6 +10,8 @@ AF_DCMotor motor4(4, MOTOR34_1KHZ);
 Servo servo1, servo2;
 
 int speed = 250;
+bool stopSequence = false;
+bool movingForward = false;
 
 void setup()
 {
@@ -18,8 +20,8 @@ void setup()
   motor2.setSpeed(speed);
   motor3.setSpeed(speed);
   motor4.setSpeed(speed);
-  servo1.attach(9);       // El servo 1 se controla con el pin 9
-  servo2.attach(10);      // El servo 2 se controla con el pin 10
+  servo1.attach(9);  // El servo 1 se controla con el pin 9
+  servo2.attach(10); // El servo 2 se controla con el pin 10
 }
 
 void moveForward()
@@ -29,6 +31,7 @@ void moveForward()
   motor2.run(FORWARD);
   motor3.run(FORWARD);
   motor4.run(FORWARD);
+  movingForward = true;
 }
 
 void moveBackward()
@@ -38,6 +41,7 @@ void moveBackward()
   motor2.run(BACKWARD);
   motor3.run(BACKWARD);
   motor4.run(BACKWARD);
+  movingForward = false;
 }
 
 void Rotate_Right()
@@ -65,47 +69,151 @@ void STOP()
   motor2.run(RELEASE);
   motor3.run(RELEASE);
   motor4.run(RELEASE);
+  movingForward = false;
 }
 
 void executeSequence()
 {
+  stopSequence = false; // Reset the stop flag at the beginning of the sequence
+
   // Secuencia de comandos predefinidos
   moveBackward();
-  delay(3000); // Ajusta el tiempo según la distancia a recorrer
+  for (int i = 0; i < 335; i++)
+  {
+    delay(10);
+    if (stopSequence)
+    {
+      STOP();
+      return;
+    }
+  }
   STOP();
 
   Rotate_Left();
-  delay(2000); // Ajusta el tiempo según el ángulo de giro
+  for (int i = 0; i < 211; i++)
+  {
+    delay(10);
+    if (stopSequence)
+    {
+      STOP();
+      return;
+    }
+  }
   STOP();
 
   moveForward();
-  delay(5000); // Ajusta el tiempo según la distancia a recorrer
+  for (int i = 0; i < 675; i++)
+  {
+    delay(10);
+    if (stopSequence)
+    {
+      STOP();
+      return;
+    }
+  }
   STOP();
 
   Rotate_Left();
-  delay(2000); // Ajusta el tiempo según el ángulo de giro
+  for (int i = 0; i < 200; i++)
+  {
+    delay(10);
+    if (stopSequence)
+    {
+      STOP();
+      return;
+    }
+  }
   STOP();
 
   moveForward();
-  delay(5000); // Ajusta el tiempo según la distancia a recorrer
+  for (int i = 0; i < 700; i++)
+  {
+    delay(10);
+    if (stopSequence)
+    {
+      STOP();
+      return;
+    }
+  }
   STOP();
 
   Rotate_Left();
-  delay(2000); // Ajusta el tiempo según el ángulo de giro
+  for (int i = 0; i < 200; i++)
+  {
+    delay(10);
+    if (stopSequence)
+    {
+      STOP();
+      return;
+    }
+  }
   STOP();
 
   moveForward();
-  delay(7000); // Ajusta el tiempo según la distancia a recorrer
+  for (int i = 0; i < 665; i++)
+  {
+    delay(10);
+    if (stopSequence)
+    {
+      STOP();
+      return;
+    }
+  }
+  STOP();
+
+  Rotate_Left();
+  for (int i = 0; i < 200; i++)
+  {
+    delay(10);
+    if (stopSequence)
+    {
+      STOP();
+      return;
+    }
+  }
+  STOP();
+
+  moveForward();
+  for (int i = 0; i < 865; i++)
+  {
+    delay(10);
+    if (stopSequence)
+    {
+      STOP();
+      return;
+    }
+  }
   STOP();
 }
 
 void loop()
 {
-  if (Serial.available() > 0) {
+  if (Serial.available() > 0)
+  {
     String command = Serial.readStringUntil('\n');
     command.trim(); // Remove any leading or trailing whitespace
-    if (command == "start") {
+    if (command == "start")
+    {
       executeSequence();
+    }
+    else if (command == "stop")
+    {
+      stopSequence = true;
+      STOP();
+    }
+    else if (command == "left" && movingForward)
+    {
+      Serial.println("Small left turn");
+      Rotate_Left();
+      delay(500);    // Adjust the time for a small turn
+      moveForward(); // Continue moving forward after the turn
+    }
+    else if (command == "right" && movingForward)
+    {
+      Serial.println("Small right turn");
+      Rotate_Right();
+      delay(500);    // Adjust the time for a small turn
+      moveForward(); // Continue moving forward after the turn
     }
   }
 }
