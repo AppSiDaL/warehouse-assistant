@@ -62,3 +62,6 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+#python autodrive/main.py --labels-json resources/path-labels.json --hef resources/path2.hef --input rpi

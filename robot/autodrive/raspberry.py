@@ -1,8 +1,8 @@
 from gpiozero import LED
 
-front_led = LED(27)
-right_led = LED(17)
-left_led = LED(22)
+front_led = LED(18)
+right_led = LED(14)
+left_led = LED(15)
 
 
 def front_on():
