@@ -85,7 +85,7 @@ void executeSequence()
   STOP();
 
   Rotate_Left();
-  for (int i = 0; i < 245; i++)
+  for (int i = 0; i < 265; i++)
   {
     delay(10);
     if (stopSequence)

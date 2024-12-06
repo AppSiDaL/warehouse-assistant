@@ -28,7 +28,7 @@ def calculate_brightness(frame):
     avg_brightness = np.mean(gray_frame)
     return avg_brightness
 
-def generate_frames(camera, light_on, light_off, threshold=50):
+def generate_frames(camera, light_on, light_off, threshold=80):
     while True:
         ret, frame = camera.read()
         if not ret:
