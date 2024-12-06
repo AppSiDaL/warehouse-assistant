@@ -35,7 +35,6 @@ def generate_frames(camera, light_on, light_off, threshold=80):
             break
 
         avg_brightness = calculate_brightness(frame)
-        print(f"Average brightness: {avg_brightness}")
 
         if avg_brightness < threshold:
             light_on()
