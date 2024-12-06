@@ -78,14 +78,14 @@ void executeSequence()
 
   // Secuencia de comandos predefinidos
   moveBackward();
-  for (int i = 0; i < 375; i++)
+  for (int i = 0; i < 405; i++)
   {
     delay(10);
   }
   STOP();
 
   Rotate_Left();
-  for (int i = 0; i < 221; i++)
+  for (int i = 0; i < 245; i++)
   {
     delay(10);
     if (stopSequence)
