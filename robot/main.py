@@ -4,7 +4,6 @@ from fastapi.responses import StreamingResponse
 import cv2
 import time
 from autodrive.serialcom import send_command
-from autodrive.raspberry import right_on, right_off, left_on, left_off
 import numpy as np
 app = FastAPI()
 
