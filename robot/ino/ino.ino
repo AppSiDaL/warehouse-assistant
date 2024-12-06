@@ -78,14 +78,14 @@ void executeSequence()
 
   // Secuencia de comandos predefinidos
   moveBackward();
-  for (int i = 0; i < 405; i++)
+  for (int i = 0; i < 345; i++)
   {
     delay(10);
   }
   STOP();
 
   Rotate_Left();
-  for (int i = 0; i < 265; i++)
+  for (int i = 0; i < 201; i++)
   {
     delay(10);
     if (stopSequence)
@@ -97,7 +97,7 @@ void executeSequence()
   STOP();
 
   moveForward();
-  for (int i = 0; i < 720; i++)
+  for (int i = 0; i < 680; i++)
   {
     delay(10);
     if (stopSequence)
@@ -109,7 +109,7 @@ void executeSequence()
   STOP();
 
   Rotate_Left();
-  for (int i = 0; i < 225; i++)
+  for (int i = 0; i < 205; i++)
   {
     delay(10);
     if (stopSequence)
@@ -133,7 +133,7 @@ void executeSequence()
   STOP();
 
   Rotate_Left();
-  for (int i = 0; i < 200; i++)
+  for (int i = 0; i < 190; i++)
   {
     delay(10);
     if (stopSequence)
@@ -145,7 +145,7 @@ void executeSequence()
   STOP();
 
   moveForward();
-  for (int i = 0; i < 675; i++)
+  for (int i = 0; i < 640; i++)
   {
     delay(10);
     if (stopSequence)
@@ -157,7 +157,7 @@ void executeSequence()
   STOP();
 
   Rotate_Left();
-  for (int i = 0; i < 205; i++)
+  for (int i = 0; i < 195; i++)
   {
     delay(10);
     if (stopSequence)
