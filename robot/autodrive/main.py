@@ -12,7 +12,6 @@ from hailo_rpi_common import (
 )
 import time
 from detection_pipeline import GStreamerDetectionApp
-from serialcom import send_command
 import tempfile
 import threading
 from raspberry import front_on, front_off,left_off,right_off
@@ -61,7 +60,6 @@ class AutonomousControl:
                 with self.lock:
                     command = self.command_queue.pop(0)
                 print(f"Sending command: {command}")
-                send_command(command)
             time.sleep(0.1)  # Adjust the sleep time as needed
 
 def app_callback(pad, info, user_data):
