@@ -1,6 +1,6 @@
 from gpiozero import LED
 
-front_led = LED(23)
+front_led = LED(17)
 right_led = LED(14)
 left_led = LED(15)
 
