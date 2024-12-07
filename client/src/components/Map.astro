@@ -5,6 +5,25 @@
   import RobotService from "../services/robot";
   let map:any;
   let marker:any;
+  let positionIndex = 0;
+  const positions = [
+    {x: 250, y: 1000},
+    {x: 350, y: 1000},
+    {x: 500, y: 1000},
+    {x: 600, y: 1000},
+    {x: 600, y: 800},
+    {x: 600, y: 400},
+    {x: 600, y: 400},
+    {x: 600, y: 200},
+    {x: 500, y: 200},
+    {x: 350, y: 200},
+    {x: 250, y: 200},
+    {x: 250, y: 200},
+    {x: 250, y: 400},
+    {x: 250, y: 600},
+    {x: 250, y: 800},
+    {x: 250, y: 1000},
+  ];
 
   async function initMap() {
     let bounds = [
@@ -23,20 +42,13 @@
     const blob = await RobotService.fetchMap();
     const url = URL.createObjectURL(blob);
 
-    L.imageOverlay(url, bounds as any).addTo(map);
+    L.imageOverlay("/map2.png", bounds as any).addTo(map);
     map.fitBounds(bounds);
 
     marker = L.marker([50, 50])
       .addTo(map)
       .bindPopup("Robot Position")
       .openPopup();
-  }
-
-  async function fetchRobotPosition() {
-    const response = await RobotService.fetchRobotPosition();
-    const { platform_position } = await response.json();
-    const [x, y] = platform_position.split(',').map(Number);
-    updateRobotPosition(x, y);
   }
 
   function updateRobotPosition(x:any, y:any) {
@@ -46,11 +58,17 @@
     }
   }
 
+  function simulateRobotMovement() {
+    const position = positions[positionIndex];
+    updateRobotPosition(position.x, position.y);
+    positionIndex = (positionIndex + 1) % positions.length;
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     initMap();
 
-    // Actualizar la posición del robot cada 5 segundos
-    setInterval(fetchRobotPosition, 5000);
+    // Simular el movimiento del robot cada 2 segundos
+    setInterval(simulateRobotMovement, 2000);
   });
 </script>
 
